@@ -12,7 +12,7 @@ export const range = (start:number, end:number, step = 1) : number[] => {
 };
 
 /** attribute a status ['correct'|'misplaced'|'incorrect'] to each letter in a guess */
-export function checkGuess(guess:string, answer:string="") : {letter:string,status:string}[] {
+export function attributeStatus(guess:string, answer:string="") : {letter:string,status:string}[] {
   const res = [] ; 
   const answer_set = new Set(answer) ;
 

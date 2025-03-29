@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import PopUp from "./PopUp";
-import { checkGuess } from "./utils";
+import { attributeStatus } from "./utils";
 
 export default function GuessBar({answer, guess, setGuess, guesses, setGuesses}:{answer:string, guess:string, setGuess:React.Dispatch<React.SetStateAction<string>>, guesses:string[], setGuesses:React.Dispatch<React.SetStateAction<string[]>>}) {
   const GuessBarRef = useRef<HTMLInputElement|null>(null) ;
@@ -30,13 +30,13 @@ export default function GuessBar({answer, guess, setGuess, guesses, setGuesses}:
         </div>
         <input ref={GuessBarRef} id="guess-input" type="text" value={guess} onChange={event => setGuess(event.target.value.trim().toUpperCase())}/>
       </form>
-      <Keyboard answer={answer} guess={guess} setGuess={setGuess} guesses={guesses} handleSubmit={handleSubmit}/>
+      <Keyboard answer={answer} setGuess={setGuess} guesses={guesses} handleSubmit={handleSubmit}/>
     </>
   );
 }
 
 
-function Keyboard({answer, guess, setGuess, guesses, handleSubmit} : {answer:string, guess:string, setGuess:CallableFunction, guesses:string[], handleSubmit:(event:React.FormEvent<HTMLFormElement>) => void}) {
+function Keyboard({answer, setGuess, guesses, handleSubmit} : {answer:string, setGuess:React.Dispatch<React.SetStateAction<string>>, guesses:string[], handleSubmit:(event:React.FormEvent<HTMLFormElement>) => void}) {
 
   const keys_line1 = ['Q','W','E','R','T','Y','U','I','O','P'];
   const keys_line2 = ['A','S','D','F','G','H','J','K','L'];
@@ -44,7 +44,7 @@ function Keyboard({answer, guess, setGuess, guesses, handleSubmit} : {answer:str
 
   const letter_status : Map<string,string> = new Map()
   guesses.forEach((guess) => (
-    checkGuess(guess, answer).map(({letter, status}) => {
+    attributeStatus(guess, answer).map(({letter, status}) => {
       const old_status = letter_status.has(letter) ? letter_status.get(letter) : "" ;
       if(old_status === "") {letter_status.set(letter, status) ;}
       else if(old_status === "incorrect" &&  status === "misplaced" ) {letter_status.set(letter, status) ;}
@@ -57,14 +57,14 @@ function Keyboard({answer, guess, setGuess, guesses, handleSubmit} : {answer:str
       {keys_line1.map((letter, i) => (
       <span key={i} 
         className={"letter_key " + (letter_status.has(letter) ? letter_status.get(letter) : "")} 
-        onClick={() => setGuess(guess + letter.toUpperCase())} >{letter}</span>
+        onClick={() => setGuess(guess => guess + letter.toUpperCase())} >{letter}</span>
       ))}
     </div>
     <div key={2} className="keyboard">
       {keys_line2.map((letter, i) => (
       <span key={i} 
         className={"letter_key " + (letter_status.has(letter) ? letter_status.get(letter) : "")} 
-        onClick={() => setGuess(guess + letter.toUpperCase())} >{letter}</span>
+        onClick={() => setGuess(guess => guess + letter.toUpperCase())} >{letter}</span>
       ))}
     </div>
     <div key={3} className="keyboard">
@@ -77,13 +77,13 @@ function Keyboard({answer, guess, setGuess, guesses, handleSubmit} : {answer:str
       {keys_line3.map((letter, i) => (
       <span key={i} 
         className={"letter_key " + (letter_status.has(letter) ? letter_status.get(letter) : "")} 
-        onClick={() => setGuess(guess + letter.toUpperCase())} >{letter}</span>
+        onClick={() => setGuess(guess => guess + letter.toUpperCase())} >{letter}</span>
       ))}
       {
         // ⇦ delete button
         <span key={keys_line3.length} 
         className={"letter_key "} 
-        onClick={() => setGuess(guess.slice(0, guess.length-1))} >{"\u21E6"}</span>
+        onClick={() => setGuess(guess => guess.slice(0, guess.length-1))} >{"\u21E6"}</span>
       }
     </div>
   </form>)

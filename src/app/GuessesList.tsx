@@ -10,7 +10,7 @@ export default function GuessesList({guess, guesses, answer}: {guess:string, gue
       {guesses.map((guess, i) => (
         <GuessOnGrid key={i} guess={guess} answer={answer}/>
       ))}
-      {<GuessOnGrid key={guesses.length} guess={guess}/>}
+      { guesses.length < 5 && <GuessOnGrid key={guesses.length} guess={guess}/>}
       {range(0, nb_empty).map(i => (
         <GuessOnGrid key={i + 1 + guesses.length} guess={""}/>
       ))}

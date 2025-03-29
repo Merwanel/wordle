@@ -1,4 +1,4 @@
-import { checkGuess, range } from "./utils";
+import { attributeStatus, range } from "./utils";
 
 export default function GuessOnGrid({guess, answer}: {guess:string, answer?:string}) {
   if (guess.length > 0 && guess.length < 5) {
@@ -7,7 +7,7 @@ export default function GuessOnGrid({guess, answer}: {guess:string, answer?:stri
   else if (guess.length > 5) {
     guess = guess.slice(0, 5) ;
   }
-  const checked_guess = checkGuess(guess, answer) ;
+  const checked_guess = attributeStatus(guess, answer) ;
   return (
       <p className="guess">
         {guess.length > 0  && checked_guess.map((check, j) => (
