@@ -1,5 +1,5 @@
 /** similar to python's range */
-export const range = (start:number, end:number, step = 1) : number[] => {
+export const range = (start:number, end?:number, step = 1) : number[] => {
   const output:number[] = [];
   if (typeof end === "undefined") {
     end = start;
@@ -11,13 +11,14 @@ export const range = (start:number, end:number, step = 1) : number[] => {
   return output;
 };
 
+type A = 'correct'|'misplaced'|'incorrect' ;
 /** attribute a status ['correct'|'misplaced'|'incorrect'] to each letter in a guess */
-export function attributeStatus(guess:string, answer:string="") : {letter:string,status:string}[] {
+export function attributeStatus(guess:string, answer:string="") : {letter:string,status:A}[] {
   const res = [] ; 
   const answer_set = new Set(answer) ;
 
   for (let i = 0; i < guess.length; i++) {
-    let status = 'incorrect';
+    let status : A = 'incorrect';
     if(guess[i] === answer[i]) {status='correct';}
     else if (answer_set.has(guess[i])) {status='misplaced';}
     res.push({
@@ -29,7 +30,8 @@ export function attributeStatus(guess:string, answer:string="") : {letter:string
 }
 
 export const sample = (arr:string[]) : string => {
-  return arr[Math.floor(Math.random() * arr.length)];
+  const r = Math.random() ;
+  return arr[Math.floor((r < 1 ? r : .9999 ) * arr.length)];
 };
 export const WORDS = [
   'AGENT',
