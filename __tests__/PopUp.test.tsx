@@ -1,6 +1,6 @@
-import '@testing-library/jest-dom'
-import { render, screen } from '@testing-library/react'
-import PopUp from '../src/app/PopUp'
+import '@testing-library/jest-dom';
+import { render, screen } from '@testing-library/react';
+import PopUp from '../src/app/PopUp';
 
 describe('PopUp', () => {
   it('should renders message correctly', () => {
@@ -10,5 +10,5 @@ describe('PopUp', () => {
     const message = screen.getByText(test_message) ;
 
     expect(message).toBeInTheDocument() ;
-  })
-})
+  });
+});
