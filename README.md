@@ -28,7 +28,7 @@ A wordle clone, done with React. [Live here on Vercel](wordle-nu-ebon.vercel.app
 #### build from source
 
 ```sh
-    git clone git@github.com:Merwanel/advent_of_code_2024.git
+    git clone git@github.com:Merwanel/wordle.git
     cd wordle
     npm install
     npm build
@@ -37,7 +37,7 @@ Then `npm start` to run
 
 #### create an docker image 
 ```sh
-    git clone git@github.com:Merwanel/advent_of_code_2024.git
+    git clone git@github.com:Merwanel/wordle.git
     cd wordle
     docker build -t wordle:latest .
 ```
