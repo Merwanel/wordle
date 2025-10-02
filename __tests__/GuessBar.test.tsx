@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 import { render, screen, fireEvent } from '@testing-library/react';
-import {  useState } from 'react';
+import { useState } from 'react';
 import GuessBar from '@/app/GuessBar';
 
 function TestWrapper({ answer = 'WORLD', initialGuess = '', initialGuesses = [] }: {
@@ -75,6 +75,36 @@ describe('GuessBar', () => {
             expect(letterElement).toBeInTheDocument();
             expect(letterElement).toHaveClass('letter_key');
         }
+    });
+
+    it('should render the keyboard letters with best status correct > misplaced > incorrect', () => {
+        render(<TestWrapper answer='FLICK' initialGuesses={[]} />);
+        const form = document.querySelector('.guess-input-wrapper');
+        const input = screen.getByRole('textbox');
+
+        for (let i = "A".charCodeAt(0); i <= "Z".charCodeAt(0); i++) {
+            const letter = String.fromCharCode(i);
+            const letterElement = screen.getByText(letter);
+            expect(letterElement).not.toHaveClass('correct');
+            expect(letterElement).not.toHaveClass('misplaced');
+            expect(letterElement).not.toHaveClass('incorrect');
+        }
+
+        fireEvent.change(input, { target: { value: 'FIRST' } });
+        fireEvent.submit(form!);
+        expect(screen.getByText("F")).toHaveClass('correct');
+        expect(screen.getByText("I")).toHaveClass('misplaced');
+        expect(screen.getByText("R")).toHaveClass('incorrect');
+        expect(screen.getByText("S")).toHaveClass('incorrect');
+        expect(screen.getByText("T")).toHaveClass('incorrect');
+
+        fireEvent.change(input, { target: { value: 'BLITZ' } });
+        fireEvent.submit(form!);
+        expect(screen.getByText("B")).toHaveClass('incorrect');
+        expect(screen.getByText("L")).toHaveClass('correct');
+        expect(screen.getByText("I")).toHaveClass('correct');
+        expect(screen.getByText("T")).toHaveClass('incorrect');
+        expect(screen.getByText("Z")).toHaveClass('incorrect');
     });
 
     it('should add letter to guess when keyboard letter is clicked', () => {
@@ -159,5 +189,30 @@ describe('GuessBar', () => {
         fireEvent.keyDown(window, { key: 'a' });
 
         expect(input).toHaveFocus();
+    });
+
+    it('should have its keyboard letters working', () => {
+        render(<TestWrapper />);
+
+        const input = screen.getByRole('textbox');
+
+        // 1st row
+        const letterQ = screen.getByText('Q');
+        fireEvent.click(letterQ);
+        expect(input).toHaveValue('Q');
+
+        // 2nd row
+        const letterA = screen.getByText('A');
+        fireEvent.click(letterA);
+        expect(input).toHaveValue('QA');
+
+        const return_button = screen.getByText('⇦');
+        fireEvent.click(return_button);
+        expect(input).toHaveValue('Q');
+
+        // 3rd row 
+        const letterZ = screen.getByText('Z');
+        fireEvent.click(letterZ);
+        expect(input).toHaveValue('QZ');
     });
 });

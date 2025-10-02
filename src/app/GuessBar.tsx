@@ -47,7 +47,6 @@ function Keyboard({answer, setGuess, guesses, handleSubmit} : {answer:string, se
     attributeStatus(guess, answer).map(({letter, status}) => {
       const old_status = letter_status.has(letter) ? letter_status.get(letter) : "" ;
       if(old_status === "") {letter_status.set(letter, status) ;}
-      else if(old_status === "incorrect" &&  status === "misplaced" ) {letter_status.set(letter, status) ;}
       else if(old_status === "misplaced" &&  status === "correct" ) {letter_status.set(letter, status) ;}
     })
   ))
